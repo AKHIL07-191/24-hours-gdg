@@ -1,0 +1,48 @@
+{
+  "system": "RESQ-NET Android SMS Gateway Interface",
+  "version": "1.0.0",
+  "protocol": "HTTP/REST + Persistent SQLite Store-and-Forward",
+  "endpoints": {
+    "inbound_single": {
+      "method": "POST",
+      "path": "/api/v1/sms/inbound",
+      "headers": {
+        "Content-Type": "application/json",
+        "X-Gateway-Key": "resqnet-gateway-token-secret"
+      },
+      "body": {
+        "message_id": "string (unique per SMS)",
+        "sender": "string (E.164 phone number)",
+        "text": "string (SMS content)",
+        "timestamp": "ISO8601 string",
+        "gateway_id": "string"
+      }
+    },
+    "inbound_batch_sync": {
+      "method": "POST",
+      "path": "/api/v1/sms/sync-batch",
+      "headers": {
+        "Content-Type": "application/json",
+        "X-Gateway-Key": "resqnet-gateway-token-secret"
+      },
+      "body": {
+        "gateway_id": "string",
+        "messages": "array of InboundSMS"
+      }
+    },
+    "outbound_poll": {
+      "method": "GET",
+      "path": "/api/v1/sms/outbox/pending?gateway_id=ANDROID_GATEWAY_01",
+      "headers": {
+        "X-Gateway-Key": "resqnet-gateway-token-secret"
+      }
+    },
+    "outbound_status_update": {
+      "method": "POST",
+      "path": "/api/v1/sms/outbox/{message_id}/status",
+      "body": {
+        "status": "SENT | DELIVERED | FAILED"
+      }
+    }
+  }
+}
